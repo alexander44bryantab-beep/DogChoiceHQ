@@ -73,13 +73,10 @@ export type RealCatalogRecord = {
 };
 
 /**
- * A catalog record may only enter the recommendation system when its evidence
- * is independently complete and verified. Marketing copy alone never satisfies
- * this requirement.
+ * Evidence is a hard publication gate. Marketing copy or a product-level
+ * verification flag alone is never sufficient for a recommendation.
  */
-export function isRecommendationReady(record: RealCatalogRecord): boolean {
-  const evidence = record.evidence;
-
+export function isCatalogEvidenceReady(evidence?: CatalogEvidence): boolean {
   if (!evidence || evidence.status !== "verified") return false;
   if (!evidence.exactAdequacyStatement) return false;
   if (evidence.adequacyMethod === "unknown") return false;
@@ -91,4 +88,8 @@ export function isRecommendationReady(record: RealCatalogRecord): boolean {
   if (!evidence.source.url || !evidence.verifiedAt) return false;
 
   return true;
+}
+
+export function isRecommendationReady(record: RealCatalogRecord): boolean {
+  return isCatalogEvidenceReady(record.evidence);
 }
