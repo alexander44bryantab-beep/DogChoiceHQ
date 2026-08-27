@@ -1,17 +1,17 @@
 import Link from "next/link";
-import { products } from "@/data/products";
+import { getFilteredProducts, getProducts } from "@/lib/product-repository";
 import { getVerificationLabel } from "@/lib/catalog";
 import SearchControls from "./SearchControls";
 import "./catalog.css";
 
 export default async function CatalogPage({ searchParams }: { searchParams?: Promise<{ query?: string; category?: string }> }) {
   const params = await searchParams;
-  const query = (params?.query ?? "").trim().toLowerCase();
-  const category = params?.category ?? "all";
-  const filtered = products.filter((product) => {
-    const matchesCategory = category === "all" || product.category === category;
-    const haystack = `${product.name} ${product.brand} ${product.category} ${product.bestFor} ${product.summary}`.toLowerCase();
-    return matchesCategory && (!query || haystack.includes(query));
+  const query = (params?.query ?? "").trim();
+  const category = params?.category;
+  const products = getProducts();
+  const filtered = getFilteredProducts({
+    query,
+    category: category && category !== "all" ? (category as (typeof products)[number]["category"]) : undefined,
   });
 
   return (
