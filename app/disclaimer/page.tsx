@@ -1,0 +1,5 @@
+import Link from "next/link";
+
+export default function DisclaimerPage() {
+  return <main className="container product-page"><Link className="back-link" href="/">← DogChoiceHQ</Link><p className="eyebrow">DISCLAIMER</p><h1 className="compare-title">How to use DogChoiceHQ.</h1><p className="hero-copy">DogChoiceHQ provides product research and comparison information for educational purposes. A ranking is a starting point, not a guarantee that a product is right for every dog.</p><section className="product-details"><h2>Health and safety</h2><p>Do not use DogChoiceHQ to diagnose, treat, cure, or prevent a disease or medical condition. Consult your veterinarian for health-related decisions, prescription diets, allergies, symptoms, or other medical concerns.</p><h2>Prices and availability</h2><p>Retail prices, availability, formulations, and labels can change. Verify important product details with the retailer and manufacturer before purchasing.</p><h2>Affiliate disclosure</h2><p>DogChoiceHQ may earn commissions from qualifying purchases. Affiliate relationships do not change the underlying scoring criteria.</p></section></main>;
+}
