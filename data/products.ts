@@ -1,5 +1,6 @@
 export type LifeStage = "Puppy" | "Adult Maintenance" | "All Life Stages";
 export type AdequacyMethod = "Nutrient Profile" | "Feeding Trial" | "Unknown";
+export type VerificationStatus = "demo" | "needs-review" | "verified";
 
 export type GuaranteedAnalysis = {
   proteinMin?: number;
@@ -27,6 +28,7 @@ export type Product = {
   caloriesPerKg?: number;
   ingredients?: string[];
   labelVerified?: boolean;
+  verificationStatus: VerificationStatus;
   sourceUrl?: string;
   lastVerified?: string;
 };
@@ -52,6 +54,7 @@ export const products: Product[] = [
     caloriesPerKg: 3600,
     ingredients: ["Chicken", "Brown rice", "Peas"],
     labelVerified: false,
+    verificationStatus: "demo",
   },
   {
     id: "acme-sensitive-salmon",
@@ -72,6 +75,7 @@ export const products: Product[] = [
     caloriesPerKg: 3700,
     ingredients: ["Salmon", "Oats", "Peas"],
     labelVerified: false,
+    verificationStatus: "demo",
   },
   {
     id: "acme-budget-bites",
@@ -92,9 +96,23 @@ export const products: Product[] = [
     caloriesPerKg: 3500,
     ingredients: ["Chicken meal", "Barley", "Corn"],
     labelVerified: false,
+    verificationStatus: "demo",
   },
 ];
 
 export function getProduct(id: string) {
   return products.find((product) => product.id === id);
+}
+
+/**
+ * A product is publishable as a recommendation only after its verification
+ * status, source, and verification date are all present.
+ */
+export function isProductVerified(product: Product): boolean {
+  return (
+    product.verificationStatus === "verified" &&
+    product.labelVerified === true &&
+    Boolean(product.sourceUrl) &&
+    Boolean(product.lastVerified)
+  );
 }
