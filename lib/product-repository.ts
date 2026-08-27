@@ -1,4 +1,4 @@
-import { products, type LifeStage, type Product } from "@/data/products";
+import { isProductVerified, products, type LifeStage, type Product } from "@/data/products";
 
 export type ProductFilters = {
   category?: Product["category"];
@@ -23,8 +23,12 @@ export function getProduct(id: string): Product | undefined {
   return products.find((product) => product.id === id);
 }
 
+/**
+ * Only products with an explicit verified status, a verified label flag, a
+ * source, and a verification date are allowed into publishable results.
+ */
 export function getVerifiedProducts(): Product[] {
-  return products.filter((product) => product.labelVerified === true);
+  return products.filter(isProductVerified);
 }
 
 export function getProductsByCategory(category: Product["category"]): Product[] {
@@ -57,7 +61,7 @@ export function getFilteredProducts(filters: ProductFilters = {}): Product[] {
   return products.filter((product) => {
     if (filters.category && product.category !== filters.category) return false;
     if (filters.lifeStage && !product.lifeStages?.includes(filters.lifeStage)) return false;
-    if (filters.verifiedOnly && product.labelVerified !== true) return false;
+    if (filters.verifiedOnly && !isProductVerified(product)) return false;
 
     if (query) {
       const searchable = [
@@ -79,9 +83,9 @@ export function getFilteredProducts(filters: ProductFilters = {}): Product[] {
 }
 
 /**
- * Returns products that are eligible for a dog's life stage and optionally
- * requires verified label data. More detailed scoring belongs in the
- * recommendation layer, not the catalog repository.
+ * Returns products that are eligible for a dog's life stage and, by default,
+ * requires the product to pass the full verification gate. More detailed
+ * scoring belongs in the recommendation layer, not the catalog repository.
  */
 export function getEligibleProducts(
   lifeStage: LifeStage,
