@@ -1,10 +1,11 @@
 import Link from "next/link";
 import "./compare.css";
-import { products } from "@/data/products";
+import { getProducts } from "@/lib/product-repository";
 import { getRecommendationLabel, rankProducts } from "@/lib/recommendations";
 
 export default function ComparePage() {
-  const rankedProducts = rankProducts(products);
+  const catalog = getProducts();
+  const rankedProducts = rankProducts(catalog);
   return (
     <main>
       <section className="compare-hero"><div className="container"><Link href="/" className="back-link">← DogChoiceHQ</Link><p className="eyebrow">DOG FOOD COMPARISON</p><h1>Compare before you choose.</h1><p className="hero-copy">Our ranking prioritizes nutrition and label evidence, then considers transparency, value, and useful features. As verified catalog data grows, the ranking becomes more meaningful.</p></div></section>
