@@ -1,3 +1,5 @@
+import { getVerificationRecord, hasRequiredVerificationEvidence } from "./verification";
+
 export type LifeStage = "Puppy" | "Adult Maintenance" | "All Life Stages";
 export type AdequacyMethod = "Nutrient Profile" | "Feeding Trial" | "Unknown";
 export type VerificationStatus = "demo" | "needs-review" | "verified";
@@ -105,14 +107,25 @@ export function getProduct(id: string) {
 }
 
 /**
- * A product is publishable as a recommendation only after its verification
- * status, source, and verification date are all present.
+ * A product is publishable only when the product-level verification fields
+ * and the independent evidence record agree.
  */
 export function isProductVerified(product: Product): boolean {
-  return (
-    product.verificationStatus === "verified" &&
-    product.labelVerified === true &&
-    Boolean(product.sourceUrl) &&
-    Boolean(product.lastVerified)
+  if (
+    product.verificationStatus !== "verified" ||
+    product.labelVerified !== true ||
+    !product.sourceUrl ||
+    !product.lastVerified
+  ) {
+    return false;
+  }
+
+  const record = getVerificationRecord(product.id);
+  return Boolean(
+    record &&
+      record.status === "verified" &&
+      record.sourceUrl === product.sourceUrl &&
+      record.verifiedAt === product.lastVerified &&
+      hasRequiredVerificationEvidence(record),
   );
 }
