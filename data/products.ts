@@ -1,3 +1,13 @@
+export type LifeStage = "Puppy" | "Adult Maintenance" | "All Life Stages";
+export type AdequacyMethod = "Nutrient Profile" | "Feeding Trial" | "Unknown";
+
+export type GuaranteedAnalysis = {
+  proteinMin?: number;
+  fatMin?: number;
+  fiberMax?: number;
+  moistureMax?: number;
+};
+
 export type Product = {
   id: string;
   name: string;
@@ -10,8 +20,18 @@ export type Product = {
   bestFor: string;
   features: string[];
   affiliateUrl: string;
+  lifeStages?: LifeStage[];
+  completeAndBalanced?: boolean;
+  adequacyMethod?: AdequacyMethod;
+  guaranteedAnalysis?: GuaranteedAnalysis;
+  caloriesPerKg?: number;
+  ingredients?: string[];
+  labelVerified?: boolean;
+  sourceUrl?: string;
+  lastVerified?: string;
 };
 
+// These are deliberately sample records. Do not publish them as real product recommendations.
 export const products: Product[] = [
   {
     id: "acme-balanced-chicken",
@@ -20,11 +40,18 @@ export const products: Product[] = [
     category: "Dog Food",
     price: 34.99,
     rating: 4.8,
-    badge: "Best Overall",
-    summary: "A sample complete-and-balanced style food used to demonstrate the DogChoiceHQ comparison system.",
+    badge: "Demo Top Choice",
+    summary: "Sample data used to demonstrate DogChoiceHQ's evidence-based comparison model.",
     bestFor: "Everyday adult dogs",
     features: ["Chicken-based recipe", "Complete meal format", "Strong value score"],
     affiliateUrl: "#",
+    lifeStages: ["Adult Maintenance"],
+    completeAndBalanced: true,
+    adequacyMethod: "Nutrient Profile",
+    guaranteedAnalysis: { proteinMin: 26, fatMin: 15, fiberMax: 5, moistureMax: 10 },
+    caloriesPerKg: 3600,
+    ingredients: ["Chicken", "Brown rice", "Peas"],
+    labelVerified: false,
   },
   {
     id: "acme-sensitive-salmon",
@@ -33,11 +60,18 @@ export const products: Product[] = [
     category: "Dog Food",
     price: 42.99,
     rating: 4.6,
-    badge: "Sensitive Choice",
-    summary: "A sample salmon-focused recipe for demonstrating specialized product comparisons.",
+    badge: "Demo Sensitive Choice",
+    summary: "Sample data used to demonstrate specialized product comparisons.",
     bestFor: "Dogs needing a different protein option",
     features: ["Salmon-based recipe", "Alternative protein", "Premium positioning"],
     affiliateUrl: "#",
+    lifeStages: ["Adult Maintenance"],
+    completeAndBalanced: true,
+    adequacyMethod: "Nutrient Profile",
+    guaranteedAnalysis: { proteinMin: 28, fatMin: 16, fiberMax: 5, moistureMax: 10 },
+    caloriesPerKg: 3700,
+    ingredients: ["Salmon", "Oats", "Peas"],
+    labelVerified: false,
   },
   {
     id: "acme-budget-bites",
@@ -46,11 +80,18 @@ export const products: Product[] = [
     category: "Dog Food",
     price: 24.99,
     rating: 4.3,
-    badge: "Best Value",
-    summary: "A sample budget-friendly option showing how price and quality can be compared together.",
+    badge: "Demo Best Value",
+    summary: "Sample budget data showing how price and product information can be compared together.",
     bestFor: "Budget-conscious shoppers",
     features: ["Lower price", "Everyday format", "Value focused"],
     affiliateUrl: "#",
+    lifeStages: ["Adult Maintenance"],
+    completeAndBalanced: true,
+    adequacyMethod: "Nutrient Profile",
+    guaranteedAnalysis: { proteinMin: 24, fatMin: 12, fiberMax: 6, moistureMax: 10 },
+    caloriesPerKg: 3500,
+    ingredients: ["Chicken meal", "Barley", "Corn"],
+    labelVerified: false,
   },
 ];
 
