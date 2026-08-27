@@ -109,6 +109,95 @@ export const products: Product[] = [
     labelVerified: false,
     verificationStatus: "demo",
   },
+  {
+    id: "purina-pro-plan-turkey-sweet-potato-wet-adult",
+    name: "Pro Plan Adult Complete Essentials Grain Free Turkey & Sweet Potato Entrée Classic Wet Dog Food",
+    brand: "Purina Pro Plan",
+    category: "Dog Food",
+    price: 2.89,
+    rating: 0,
+    badge: "Verified Source",
+    summary:
+      "Adult wet dog food with turkey and sweet potato. Nutritional and label evidence is sourced from Purina materials; retailer pricing is tracked separately.",
+    bestFor: "Adult dogs needing a complete and balanced wet food",
+    features: [
+      "Adult maintenance",
+      "Complete and balanced",
+      "Turkey as the first ingredient",
+      "Wet food",
+    ],
+    affiliateUrl:
+      "https://www.purina.com/dogs/shop/pro-plan-complete-essentials-grain-free-turkey-sweet-potato-wet-dog-food",
+    lifeStages: ["Adult Maintenance"],
+    completeAndBalanced: true,
+    adequacyMethod: "Nutrient Profile",
+    guaranteedAnalysis: {
+      proteinMin: 9,
+      fatMin: 6,
+      fiberMax: 1.5,
+      moistureMax: 78,
+    },
+    caloriesPerKg: 1191,
+    ingredients: [
+      "Turkey",
+      "Water",
+      "Liver",
+      "Meat By-Products",
+      "Chicken",
+      "Sweet Potatoes",
+      "Guar Gum",
+      "Minerals",
+      "Salt",
+      "Carrageenan",
+      "Fish Oil",
+      "Vitamins",
+      "Choline Chloride",
+    ],
+    labelVerified: true,
+    verificationStatus: "verified",
+    sourceUrl:
+      "https://www.proplanvetdirect.com/canine-pro-plan-natural-grain-free-turkey-sweet-potato-entree-adult",
+    lastVerified: "2026-08-26",
+    catalogEvidence: {
+      exactAdequacyStatement:
+        "Pro Plan Complete Essentials Turkey & Sweet Potato Entrée Classic is formulated to meet the nutritional levels established by the AAFCO Dog Food Nutrient Profiles for maintenance of adult dogs.",
+      adequacyMethod: "nutrient-profile",
+      lifeStageVerified: true,
+      guaranteedAnalysis: {
+        proteinPercent: 9,
+        fatPercent: 6,
+        fiberPercent: 1.5,
+        moisturePercent: 78,
+        caloriesPerKg: 1191,
+        caloriesPerCan: 438,
+        basis: "as-fed",
+      },
+      ingredientsVerified: true,
+      caloriesVerified: true,
+      feedingDirectionsVerified: true,
+      manufacturerVerified: true,
+      source: {
+        url: "https://www.proplanvetdirect.com/canine-pro-plan-natural-grain-free-turkey-sweet-potato-entree-adult",
+        type: "manufacturer-product-page",
+        title: "Complete Essentials Turkey & Sweet Potato Grain Free Wet Dog Food",
+        accessedAt: "2026-08-26",
+      },
+      reviewerNotes:
+        "Primary manufacturer source reviewed. Guaranteed analysis is recorded on an as-fed basis. Calorie content is 1,191 kcal/kg and 438 kcal/can. Feeding directions and adult-maintenance adequacy statement were also reviewed.",
+      status: "verified",
+      verifiedAt: "2026-08-26",
+    },
+    commercialListings: [
+      {
+        retailerName: "PetSmart",
+        url: "https://www.petsmart.com/dog/food/canned-food/purina-pro-plan-complete-essentials-adult-wet-dog-food---grain-free-turkey-and-sweet-potato-13-oz-47255.html",
+        packageSize: "13 oz can",
+        price: 2.89,
+        currency: "USD",
+        priceCheckedAt: "2026-08-26",
+      },
+    ],
+  },
 ];
 
 export function getProduct(id: string) {
@@ -143,12 +232,15 @@ export function isProductVerified(product: Product): boolean {
   const evidence = product.catalogEvidence;
   if (!evidence) return false;
 
+  const category =
+    product.category === "Dog Food" ? "wet-food" : "dry-food";
+
   return isRecommendationReady({
     id: product.id,
     brand: product.brand,
     productName: product.name,
     species: "dog",
-    category: "dry-food",
+    category,
     lifeStages: (product.lifeStages ?? []).map((stage) =>
       stage === "Puppy"
         ? "puppy"
