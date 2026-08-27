@@ -5,10 +5,10 @@ const siteUrl = "https://dogchoicehq.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const productUrls = products
-    .filter((product) => product.verificationStatus !== "demo")
+    .filter((product) => product.labelVerified === true)
     .map((product) => ({
       url: `${siteUrl}/products/${product.id}`,
-      lastModified: product.lastVerified ? new Date(product.lastVerified) : new Date(),
+      ...(product.lastVerified ? { lastModified: new Date(product.lastVerified) } : {}),
       changeFrequency: "monthly" as const,
       priority: 0.8,
     }));
