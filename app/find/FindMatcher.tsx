@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { defaultDogProfile, getDogProfileSummary, scoreDogMatch, type DogProfile } from "@/lib/dog-profile";
+import { scoreProduct } from "@/lib/recommendations";
 import type { Product } from "@/data/products";
 
 type Props = { products: Product[] };
@@ -41,11 +42,26 @@ export default function FindMatcher({ products }: Props) {
   const [profile, setProfile] = useState<DogProfile>(defaultDogProfile);
 
   const recommendations = useMemo(() => {
-    return products
-      .filter((product) => isEligibleForLifeStage(product, profile.lifeStage))
+    const eligibleProducts = products.filter((product) =>
+      isEligibleForLifeStage(product, profile.lifeStage),
+    );
+
+    return eligibleProducts
       .map((product) => {
         const match = scoreDogMatch(profile, toMatcherProduct(product));
-        return { product, ...match };
+        const evidence = scoreProduct(product, eligibleProducts);
+
+        // Dog fit is the primary signal; evidence quality is a secondary guardrail.
+        const score = Math.round(match.score * 0.7 + evidence.score * 0.3);
+
+        return {
+          product,
+          score,
+          reasons: [
+            ...match.reasons,
+            { label: "Evidence quality", points: Math.round(evidence.score * 0.3) },
+          ],
+        };
       })
       .sort((a, b) => b.score - a.score);
   }, [profile, products]);
@@ -59,12 +75,12 @@ export default function FindMatcher({ products }: Props) {
         <div className="field">
           <label>Life stage</label>
           <div className="choice-row">
-            {(["puppy", "adult", "senior"] as const).map((value) => (
+            {["puppy", "adult", "senior"].map((value) => (
               <button
                 type="button"
                 className={profile.lifeStage === value ? "choice active" : "choice"}
                 key={value}
-                onClick={() => set("lifeStage", value)}
+                onClick={() => set("lifeStage", value as DogProfile["lifeStage"])}
               >
                 {value[0].toUpperCase() + value.slice(1)}
               </button>
@@ -75,12 +91,12 @@ export default function FindMatcher({ products }: Props) {
         <div className="field">
           <label>Size</label>
           <div className="choice-row">
-            {(["small", "medium", "large"] as const).map((value) => (
+            {["small", "medium", "large"].map((value) => (
               <button
                 type="button"
                 className={profile.size === value ? "choice active" : "choice"}
                 key={value}
-                onClick={() => set("size", value)}
+                onClick={() => set("size", value as DogProfile["size"])}
               >
                 {value[0].toUpperCase() + value.slice(1)}
               </button>
@@ -91,12 +107,12 @@ export default function FindMatcher({ products }: Props) {
         <div className="field">
           <label>Activity level</label>
           <div className="choice-row">
-            {(["low", "moderate", "high"] as const).map((value) => (
+            {["low", "moderate", "high"].map((value) => (
               <button
                 type="button"
                 className={profile.activityLevel === value ? "choice active" : "choice"}
                 key={value}
-                onClick={() => set("activityLevel", value)}
+                onClick={() => set("activityLevel", value as DogProfile["activityLevel"])}
               >
                 {value[0].toUpperCase() + value.slice(1)}
               </button>
@@ -138,7 +154,7 @@ export default function FindMatcher({ products }: Props) {
                 <p>{product.bestFor}</p>
                 <div className="reason-list">
                   {reasons.map((reason) => (
-                    <span key={reason.label}>
+                    <span key={`${reason.label}-${reason.points}`}>
                       {reason.label}{reason.points ? ` +${reason.points}` : ""}
                     </span>
                   ))}
