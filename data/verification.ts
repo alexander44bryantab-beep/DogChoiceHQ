@@ -22,32 +22,54 @@ export type VerificationRecord = {
   reviewerNote?: string;
 };
 
-/**
- * Verification records are kept separate from product presentation data so
- * evidence can grow without coupling the UI to the review workflow.
- */
 export const verificationRecords: VerificationRecord[] = [
   {
     productId: "purina-pro-plan-turkey-sweet-potato-wet-adult",
     status: "verified",
     verifiedAt: "2026-08-26",
-    sourceUrl:
-      "https://www.proplanvetdirect.com/canine-pro-plan-natural-grain-free-turkey-sweet-potato-entree-adult",
+    sourceUrl: "https://www.proplanvetdirect.com/canine-pro-plan-natural-grain-free-turkey-sweet-potato-entree-adult",
     evidence: [
       { check: "label", passed: true, note: "Manufacturer product/label information reviewed." },
       { check: "source", passed: true, note: "Primary Purina source recorded." },
       { check: "date", passed: true, note: "Evidence reviewed 2026-08-26." },
       { check: "life-stage", passed: true, note: "Adult maintenance." },
-      {
-        check: "adequacy",
-        passed: true,
-        note: "Complete and balanced; adequacy statement cites AAFCO Dog Food Nutrient Profiles for adult maintenance.",
-      },
+      { check: "adequacy", passed: true, note: "AAFCO Dog Food Nutrient Profiles adequacy statement for adult maintenance." },
       { check: "analysis", passed: true, note: "Guaranteed analysis and calorie content recorded from manufacturer materials." },
       { check: "ingredients", passed: true, note: "Ingredient statement recorded from manufacturer materials." },
     ],
-    reviewerNote:
-      "First real catalog record. Regulatory/nutritional evidence was checked against manufacturer materials; retailer price is stored separately and is not treated as nutritional evidence.",
+    reviewerNote: "Verified manufacturer evidence; retailer price is stored separately.",
+  },
+  {
+    productId: "royal-canin-fresh-health-nutrition-adult",
+    status: "verified",
+    verifiedAt: "2026-08-26",
+    sourceUrl: "https://www.royalcanin.com/us/dogs/products/retail-products/fresh-health-nutrition-adult-8100",
+    evidence: [
+      { check: "label", passed: true, note: "Manufacturer product information reviewed." },
+      { check: "source", passed: true, note: "Primary Royal Canin US source recorded." },
+      { check: "date", passed: true, note: "Evidence reviewed 2026-08-26." },
+      { check: "life-stage", passed: true, note: "Adult, one-to-seven-year life stage." },
+      { check: "adequacy", passed: true, note: "AAFCO Dog Food Nutrient Profiles maintenance statement." },
+      { check: "analysis", passed: true, note: "Guaranteed analysis and calorie content recorded from manufacturer materials." },
+      { check: "ingredients", passed: true, note: "Ingredient statement recorded from manufacturer materials." },
+    ],
+    reviewerNote: "Verified manufacturer evidence; retailer price is stored separately.",
+  },
+  {
+    productId: "royal-canin-fresh-health-nutrition-senior",
+    status: "verified",
+    verifiedAt: "2026-08-26",
+    sourceUrl: "https://www.royalcanin.com/us/dogs/products/retail-products/fresh-health-nutrition-senior-8101",
+    evidence: [
+      { check: "label", passed: true, note: "Manufacturer product information reviewed." },
+      { check: "source", passed: true, note: "Primary Royal Canin US source recorded." },
+      { check: "date", passed: true, note: "Evidence reviewed 2026-08-26." },
+      { check: "life-stage", passed: true, note: "Senior, over-seven-year life stage." },
+      { check: "adequacy", passed: true, note: "AAFCO Dog Food Nutrient Profiles maintenance statement." },
+      { check: "analysis", passed: true, note: "Guaranteed analysis and calorie content recorded from manufacturer materials." },
+      { check: "ingredients", passed: true, note: "Ingredient statement recorded from manufacturer materials." },
+    ],
+    reviewerNote: "Verified manufacturer evidence; retailer price is stored separately.",
   },
 ];
 
@@ -57,14 +79,11 @@ export function getVerificationRecord(productId: string) {
 
 export function hasRequiredVerificationEvidence(record: VerificationRecord) {
   const required: VerificationCheck[] = ["label", "source", "date"];
-  return required.every((check) =>
-    record.evidence.some((item) => item.check === check && item.passed),
-  );
+  return required.every((check) => record.evidence.some((item) => item.check === check && item.passed));
 }
 
 export function getVerificationScore(record: VerificationRecord): number {
   if (record.evidence.length === 0) return 0;
-
   const passed = record.evidence.filter((item) => item.passed).length;
   return Math.round((passed / record.evidence.length) * 100);
 }
