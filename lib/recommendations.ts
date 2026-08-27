@@ -12,28 +12,46 @@ export type ScoredProduct = Product & {
 
 const clamp = (value: number, min = 0, max = 100) => Math.min(max, Math.max(min, value));
 
-/**
- * Transparent first-pass ranking model.
- * The weights remain explicit so every recommendation can be audited.
- * Nutrition and label-verification signals are intentionally separated from
- * marketing claims and will become data-driven as verified catalog fields are added.
- */
-export function scoreProduct(product: Product, catalog: Product[] = [product]): ScoredProduct {
+function scoreNutrition(product: Product) {
+  if (product.category !== "Dog Food") return 50;
+  if (!product.completeAndBalanced) return 20;
+  if (!product.lifeStages?.length) return 55;
+  return 90;
+}
+
+function scoreTransparency(product: Product) {
+  let score = 0;
+  if (product.labelVerified) score += 40;
+  if (product.adequacyMethod && product.adequacyMethod !== "Unknown") score += 25;
+  if (product.guaranteedAnalysis) score += 15;
+  if (product.ingredients?.length) score += 10;
+  if (product.caloriesPerKg) score += 10;
+  return clamp(score);
+}
+
+function scoreValue(product: Product, catalog: Product[]) {
   const prices = catalog.map((item) => item.price);
-  const minPrice = Math.min(...prices);
-  const maxPrice = Math.max(...prices);
-  const priceRange = Math.max(maxPrice - minPrice, 1);
+  const min = Math.min(...prices);
+  const max = Math.max(...prices);
+  if (max === min) return 100;
+  return clamp(100 - ((product.price - min) / (max - min)) * 100);
+}
 
-  // Conservative placeholder until verified label data is stored for each product.
-  const nutritionScore = product.category === "Dog Food" ? 70 : 50;
-  const transparencyScore = 50;
-  const valueScore = clamp(100 - ((product.price - minPrice) / priceRange) * 100);
-  const featureScore = clamp(product.features.length * 20);
+function scoreFeatures(product: Product) {
+  return clamp(product.features.length * 20);
+}
 
+export function scoreProduct(product: Product, catalog: Product[] = [product]): ScoredProduct {
+  const nutritionScore = scoreNutrition(product);
+  const transparencyScore = scoreTransparency(product);
+  const valueScore = scoreValue(product, catalog);
+  const featureScore = scoreFeatures(product);
+
+  // Evidence-first weighting. Verified label/nutrition data matters more than marketing features.
   const score = Math.round(
     nutritionScore * 0.4 +
-      transparencyScore * 0.2 +
-      valueScore * 0.25 +
+      transparencyScore * 0.25 +
+      valueScore * 0.2 +
       featureScore * 0.15,
   );
 
