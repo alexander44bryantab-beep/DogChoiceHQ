@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { products } from "@/data/products";
 import { getVerificationLabel } from "@/lib/catalog";
+import "./catalog.css";
 
 export default function CatalogPage() {
   return (
