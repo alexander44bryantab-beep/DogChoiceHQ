@@ -1,3 +1,8 @@
+import {
+  isRecommendationReady,
+  type CatalogEvidence,
+  type CommercialListing,
+} from "./catalog-evidence-schema";
 import { getVerificationRecord, hasRequiredVerificationEvidence } from "./verification";
 
 export type LifeStage = "Puppy" | "Adult Maintenance" | "All Life Stages";
@@ -33,6 +38,10 @@ export type Product = {
   verificationStatus: VerificationStatus;
   sourceUrl?: string;
   lastVerified?: string;
+  /** Structured evidence for the real-product verification workflow. */
+  catalogEvidence?: CatalogEvidence;
+  /** Optional current retailer/affiliate listings kept separate from nutrition evidence. */
+  commercialListings?: CommercialListing[];
 };
 
 // These are deliberately sample records. Do not publish them as real product recommendations.
@@ -107,8 +116,8 @@ export function getProduct(id: string) {
 }
 
 /**
- * A product is publishable only when the product-level verification fields
- * and the independent evidence record agree.
+ * A product is publishable only when the product-level verification fields,
+ * independent review record, and structured catalog evidence all agree.
  */
 export function isProductVerified(product: Product): boolean {
   if (
@@ -121,11 +130,34 @@ export function isProductVerified(product: Product): boolean {
   }
 
   const record = getVerificationRecord(product.id);
-  return Boolean(
-    record &&
-      record.status === "verified" &&
-      record.sourceUrl === product.sourceUrl &&
-      record.verifiedAt === product.lastVerified &&
-      hasRequiredVerificationEvidence(record),
-  );
+  if (
+    !record ||
+    record.status !== "verified" ||
+    record.sourceUrl !== product.sourceUrl ||
+    record.verifiedAt !== product.lastVerified ||
+    !hasRequiredVerificationEvidence(record)
+  ) {
+    return false;
+  }
+
+  const evidence = product.catalogEvidence;
+  if (!evidence) return false;
+
+  return isRecommendationReady({
+    id: product.id,
+    brand: product.brand,
+    productName: product.name,
+    species: "dog",
+    category: "dry-food",
+    lifeStages: (product.lifeStages ?? []).map((stage) =>
+      stage === "Puppy"
+        ? "puppy"
+        : stage === "Adult Maintenance"
+          ? "adult"
+          : "all-life-stages",
+    ),
+    labelSource: evidence.source,
+    evidence,
+    listings: product.commercialListings,
+  });
 }
