@@ -2,6 +2,8 @@
 html { scroll-behavior: smooth; }
 body { margin: 0; background: #f7f5ef; color: #18352d; font-family: Arial, Helvetica, sans-serif; }
 a { color: inherit; text-decoration: none; }
+button, input { font: inherit; }
+button { cursor: pointer; }
 .container { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
 .nav { height: 82px; display: flex; align-items: center; justify-content: space-between; }
 .brand { font-size: 25px; font-weight: 800; letter-spacing: -1px; }
@@ -59,5 +61,29 @@ h1 em { color: #b55d34; font-family: Georgia, serif; font-weight: 500; }
 .product-details h2 { margin-top: 0; font-size: 28px; }
 .product-details p, .product-details li { color: #5d6c65; line-height: 1.7; }
 .disclosure { margin-top: 30px; color: #77817d; font-size: 12px; line-height: 1.6; }
-@media (max-width: 800px) { .nav-links { display: none; } .hero { padding: 55px 0; } .hero-grid, .product-hero { grid-template-columns: 1fr; gap: 45px; } .category-grid { grid-template-columns: 1fr 1fr; } .steps { grid-template-columns: 1fr; gap: 30px; } .footer-inner { flex-direction: column; align-items: flex-start; } .product-placeholder { min-height: 260px; } }
-@media (max-width: 520px) { .container { width: min(100% - 28px, 1120px); } h1 { font-size: 48px; } .category-grid { grid-template-columns: 1fr; } }
+.find-page { min-height: 100vh; padding-bottom: 100px; }
+.find-wrap { max-width: 900px; }
+.find-intro { max-width: 680px; margin: 24px 0 42px; color: #64716b; font-size: 17px; line-height: 1.7; }
+.profile-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; padding: 30px; border: 1px solid #deded6; border-radius: 18px; background: white; }
+.field label { display: block; margin-bottom: 11px; font-size: 13px; font-weight: 800; color: #53645e; }
+.choice-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.choice { border: 1px solid #d6d9d2; background: #fafaf7; color: #52615b; border-radius: 9px; padding: 10px 13px; }
+.choice.active { background: #18352d; border-color: #18352d; color: white; }
+.field input { width: 100%; border: 1px solid #d6d9d2; border-radius: 9px; padding: 10px 12px; background: #fafaf7; color: #18352d; }
+.profile-summary { margin: 18px 0 70px; color: #65736d; font-size: 13px; }
+.results-head { display: flex; justify-content: space-between; align-items: end; margin-bottom: 20px; }
+.results-head h2 { margin: 0; font-size: 34px; letter-spacing: -1px; }
+.results-head > span { font-size: 12px; color: #8a918d; }
+.match-card { display: grid; grid-template-columns: 55px 1fr 100px; gap: 18px; align-items: start; padding: 24px; margin: 12px 0; border: 1px solid #deded6; border-radius: 15px; background: white; }
+.rank { font-weight: 800; color: #b55d34; }
+.brand-small { margin: 0 0 5px; font-size: 11px; color: #7a837f; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+.match-main h3 { margin: 0 0 7px; font-size: 20px; }
+.match-main > p { margin: 0; color: #64716b; font-size: 14px; }
+.reason-list { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 15px; }
+.reason-list span { padding: 6px 9px; border-radius: 99px; background: #eef3e8; color: #466154; font-size: 11px; }
+.match-score { text-align: right; }
+.match-score strong { display: block; font-size: 34px; letter-spacing: -1px; }
+.match-score span { color: #7b8580; font-size: 11px; }
+.disclaimer { margin-top: 35px; color: #7b8580; font-size: 12px; line-height: 1.6; }
+@media (max-width: 800px) { .nav-links { display: none; } .hero { padding: 55px 0; } .hero-grid, .product-hero { grid-template-columns: 1fr; gap: 45px; } .category-grid { grid-template-columns: 1fr 1fr; } .steps { grid-template-columns: 1fr; gap: 30px; } .footer-inner { flex-direction: column; align-items: flex-start; } .product-placeholder { min-height: 260px; } .profile-panel { grid-template-columns: 1fr; } }
+@media (max-width: 520px) { .container { width: min(100% - 28px, 1120px); } h1 { font-size: 48px; } .category-grid { grid-template-columns: 1fr; } .match-card { grid-template-columns: 35px 1fr; } .match-score { grid-column: 2; text-align: left; } }
