@@ -5,7 +5,7 @@ import {
 } from "./catalog-evidence-schema";
 import { getVerificationRecord, hasRequiredVerificationEvidence } from "./verification";
 
-export type LifeStage = "Puppy" | "Adult Maintenance" | "All Life Stages";
+export type LifeStage = "Puppy" | "Adult Maintenance" | "Senior" | "All Life Stages";
 export type AdequacyMethod = "Nutrient Profile" | "Feeding Trial" | "Unknown";
 export type VerificationStatus = "demo" | "needs-review" | "verified";
 
@@ -38,13 +38,11 @@ export type Product = {
   verificationStatus: VerificationStatus;
   sourceUrl?: string;
   lastVerified?: string;
-  /** Structured evidence for the real-product verification workflow. */
   catalogEvidence?: CatalogEvidence;
-  /** Optional current retailer/affiliate listings kept separate from nutrition evidence. */
   commercialListings?: CommercialListing[];
 };
 
-// These are deliberately sample records. Do not publish them as real product recommendations.
+// Demo records remain intentionally blocked from recommendations.
 export const products: Product[] = [
   {
     id: "acme-balanced-chicken",
@@ -117,86 +115,111 @@ export const products: Product[] = [
     price: 2.89,
     rating: 0,
     badge: "Verified Source",
-    summary:
-      "Adult wet dog food with turkey and sweet potato. Nutritional and label evidence is sourced from Purina materials; retailer pricing is tracked separately.",
+    summary: "Adult wet dog food with turkey and sweet potato. Nutritional and label evidence is sourced from Purina materials; retailer pricing is tracked separately.",
     bestFor: "Adult dogs needing a complete and balanced wet food",
-    features: [
-      "Adult maintenance",
-      "Complete and balanced",
-      "Turkey as the first ingredient",
-      "Wet food",
-    ],
-    affiliateUrl:
-      "https://www.purina.com/dogs/shop/pro-plan-complete-essentials-grain-free-turkey-sweet-potato-wet-dog-food",
+    features: ["Adult maintenance", "Complete and balanced", "Turkey as the first ingredient", "Wet food"],
+    affiliateUrl: "https://www.purina.com/dogs/shop/pro-plan-complete-essentials-grain-free-turkey-sweet-potato-wet-dog-food",
     lifeStages: ["Adult Maintenance"],
     completeAndBalanced: true,
     adequacyMethod: "Nutrient Profile",
-    guaranteedAnalysis: {
-      proteinMin: 9,
-      fatMin: 6,
-      fiberMax: 1.5,
-      moistureMax: 78,
-    },
+    guaranteedAnalysis: { proteinMin: 9, fatMin: 6, fiberMax: 1.5, moistureMax: 78 },
     caloriesPerKg: 1191,
-    ingredients: [
-      "Turkey",
-      "Water",
-      "Liver",
-      "Meat By-Products",
-      "Chicken",
-      "Sweet Potatoes",
-      "Guar Gum",
-      "Minerals",
-      "Salt",
-      "Carrageenan",
-      "Fish Oil",
-      "Vitamins",
-      "Choline Chloride",
-    ],
+    ingredients: ["Turkey", "Water", "Liver", "Meat By-Products", "Chicken", "Sweet Potatoes", "Guar Gum", "Minerals", "Salt", "Carrageenan", "Fish Oil", "Vitamins", "Choline Chloride"],
     labelVerified: true,
     verificationStatus: "verified",
-    sourceUrl:
-      "https://www.proplanvetdirect.com/canine-pro-plan-natural-grain-free-turkey-sweet-potato-entree-adult",
+    sourceUrl: "https://www.proplanvetdirect.com/canine-pro-plan-natural-grain-free-turkey-sweet-potato-entree-adult",
     lastVerified: "2026-08-26",
     catalogEvidence: {
-      exactAdequacyStatement:
-        "Pro Plan Complete Essentials Turkey & Sweet Potato Entrée Classic is formulated to meet the nutritional levels established by the AAFCO Dog Food Nutrient Profiles for maintenance of adult dogs.",
+      exactAdequacyStatement: "Pro Plan Complete Essentials Turkey & Sweet Potato Entrée Classic is formulated to meet the nutritional levels established by the AAFCO Dog Food Nutrient Profiles for maintenance of adult dogs.",
       adequacyMethod: "nutrient-profile",
       lifeStageVerified: true,
-      guaranteedAnalysis: {
-        proteinPercent: 9,
-        fatPercent: 6,
-        fiberPercent: 1.5,
-        moisturePercent: 78,
-        caloriesPerKg: 1191,
-        caloriesPerCan: 438,
-        basis: "as-fed",
-      },
+      guaranteedAnalysis: { proteinPercent: 9, fatPercent: 6, fiberPercent: 1.5, moisturePercent: 78, caloriesPerKg: 1191, caloriesPerCan: 438, basis: "as-fed" },
       ingredientsVerified: true,
       caloriesVerified: true,
       feedingDirectionsVerified: true,
       manufacturerVerified: true,
-      source: {
-        url: "https://www.proplanvetdirect.com/canine-pro-plan-natural-grain-free-turkey-sweet-potato-entree-adult",
-        type: "manufacturer-product-page",
-        title: "Complete Essentials Turkey & Sweet Potato Grain Free Wet Dog Food",
-        accessedAt: "2026-08-26",
-      },
-      reviewerNotes:
-        "Primary manufacturer source reviewed. Guaranteed analysis is recorded on an as-fed basis. Calorie content is 1,191 kcal/kg and 438 kcal/can. Feeding directions and adult-maintenance adequacy statement were also reviewed.",
+      source: { url: "https://www.proplanvetdirect.com/canine-pro-plan-natural-grain-free-turkey-sweet-potato-entree-adult", type: "manufacturer-product-page", title: "Complete Essentials Turkey & Sweet Potato Grain Free Wet Dog Food", accessedAt: "2026-08-26" },
+      reviewerNotes: "Primary manufacturer source reviewed. Guaranteed analysis is recorded on an as-fed basis. Calorie content is 1,191 kcal/kg and 438 kcal/can. Feeding directions and adult-maintenance adequacy statement were also reviewed.",
       status: "verified",
       verifiedAt: "2026-08-26",
     },
-    commercialListings: [
-      {
-        retailerName: "PetSmart",
-        url: "https://www.petsmart.com/dog/food/canned-food/purina-pro-plan-complete-essentials-adult-wet-dog-food---grain-free-turkey-and-sweet-potato-13-oz-47255.html",
-        packageSize: "13 oz can",
-        price: 2.89,
-        currency: "USD",
-        priceCheckedAt: "2026-08-26",
-      },
-    ],
+    commercialListings: [{ retailerName: "PetSmart", url: "https://www.petsmart.com/dog/food/canned-food/purina-pro-plan-complete-essentials-adult-wet-dog-food---grain-free-turkey-and-sweet-potato-13-oz-47255.html", packageSize: "13 oz can", price: 2.89, currency: "USD", priceCheckedAt: "2026-08-26" }],
+  },
+  {
+    id: "royal-canin-fresh-health-nutrition-adult",
+    name: "Fresh Health Nutrition Adult Dog Food",
+    brand: "Royal Canin",
+    category: "Dog Food",
+    price: 70.12,
+    rating: 0,
+    badge: "Verified Source",
+    summary: "Gently cooked adult fresh food with manufacturer-published ingredients, guaranteed analysis, calories, and nutritional adequacy statement.",
+    bestFor: "Adult dogs from one to seven years",
+    features: ["Adult maintenance", "Fresh frozen food", "Pork and vegetables", "Complete and balanced"],
+    affiliateUrl: "https://www.royalcanin.com/us/dogs/products/retail-products/fresh-health-nutrition-adult-8100",
+    lifeStages: ["Adult Maintenance"],
+    completeAndBalanced: true,
+    adequacyMethod: "Nutrient Profile",
+    guaranteedAnalysis: { proteinMin: 6.5, fatMin: 4.5, fiberMax: 2, moistureMax: 75 },
+    caloriesPerKg: 1228,
+    ingredients: ["Brown rice", "Pork", "Yellow squash", "Spinach", "Dicalcium phosphate", "Fish oil"],
+    labelVerified: true,
+    verificationStatus: "verified",
+    sourceUrl: "https://www.royalcanin.com/us/dogs/products/retail-products/fresh-health-nutrition-adult-8100",
+    lastVerified: "2026-08-26",
+    catalogEvidence: {
+      exactAdequacyStatement: "ROYAL CANIN® FRESH HEALTH NUTRITION Adult is formulated to meet the nutritional levels established by the AAFCO Dog Food Nutrient Profiles for maintenance.",
+      adequacyMethod: "nutrient-profile",
+      lifeStageVerified: true,
+      guaranteedAnalysis: { proteinPercent: 6.5, fatPercent: 4.5, fiberPercent: 2, moisturePercent: 75, caloriesPerKg: 1228, caloriesPerCup: 220, basis: "as-fed" },
+      ingredientsVerified: true,
+      caloriesVerified: true,
+      feedingDirectionsVerified: true,
+      manufacturerVerified: true,
+      source: { url: "https://www.royalcanin.com/us/dogs/products/retail-products/fresh-health-nutrition-adult-8100", type: "manufacturer-product-page", title: "Royal Canin Fresh Health Nutrition Adult Dog Food", accessedAt: "2026-08-26" },
+      reviewerNotes: "Royal Canin product page identifies the food as complete food for dogs and publishes ingredients, guaranteed analysis, calorie content, feeding section, and adequacy statement.",
+      status: "verified",
+      verifiedAt: "2026-08-26",
+    },
+    commercialListings: [{ retailerName: "Chewy", url: "https://www.chewy.com/royal-canin-fresh-health-nutrition/dp/1840726", packageSize: "14.1 oz pouch, pack of 7", price: 70.12, currency: "USD", priceCheckedAt: "2026-08-26" }],
+  },
+  {
+    id: "royal-canin-fresh-health-nutrition-senior",
+    name: "Fresh Health Nutrition Senior Dog Food",
+    brand: "Royal Canin",
+    category: "Dog Food",
+    price: 70.12,
+    rating: 0,
+    badge: "Verified Source",
+    summary: "Gently cooked senior fresh food with manufacturer-published ingredients, guaranteed analysis, calories, and nutritional adequacy statement.",
+    bestFor: "Senior dogs over seven years",
+    features: ["Senior maintenance", "Fresh frozen food", "Chicken, beef and vegetables", "Complete and balanced"],
+    affiliateUrl: "https://www.royalcanin.com/us/dogs/products/retail-products/fresh-health-nutrition-senior-8101",
+    lifeStages: ["Senior"],
+    completeAndBalanced: true,
+    adequacyMethod: "Nutrient Profile",
+    guaranteedAnalysis: { proteinMin: 4.6, fatMin: 3.5, fiberMax: 2, moistureMax: 74.5 },
+    caloriesPerKg: 1118,
+    ingredients: ["Brown rice", "Chicken", "Yellow squash", "Kale", "Beef", "Vegetable oil"],
+    labelVerified: true,
+    verificationStatus: "verified",
+    sourceUrl: "https://www.royalcanin.com/us/dogs/products/retail-products/fresh-health-nutrition-senior-8101",
+    lastVerified: "2026-08-26",
+    catalogEvidence: {
+      exactAdequacyStatement: "ROYAL CANIN® FRESH HEALTH NUTRITION Senior is formulated to meet the nutritional levels established by the AAFCO Dog Food Nutrient Profiles for maintenance.",
+      adequacyMethod: "nutrient-profile",
+      lifeStageVerified: true,
+      guaranteedAnalysis: { proteinPercent: 4.6, fatPercent: 3.5, fiberPercent: 2, moisturePercent: 74.5, caloriesPerKg: 1118, caloriesPerCup: 243, basis: "as-fed" },
+      ingredientsVerified: true,
+      caloriesVerified: true,
+      feedingDirectionsVerified: true,
+      manufacturerVerified: true,
+      source: { url: "https://www.royalcanin.com/us/dogs/products/retail-products/fresh-health-nutrition-senior-8101", type: "manufacturer-product-page", title: "Royal Canin Fresh Health Nutrition Senior Dog Food", accessedAt: "2026-08-26" },
+      reviewerNotes: "Royal Canin product page identifies the food as complete food for dogs and publishes ingredients, guaranteed analysis, calorie content, feeding section, and senior-maintenance adequacy statement.",
+      status: "verified",
+      verifiedAt: "2026-08-26",
+    },
+    commercialListings: [{ retailerName: "Chewy", url: "https://www.chewy.com/royal-canin-fresh-health-nutrition/dp/1840702", packageSize: "14.1 oz pouch, pack of 7", price: 70.12, currency: "USD", priceCheckedAt: "2026-08-26" }],
   },
 ];
 
@@ -204,49 +227,28 @@ export function getProduct(id: string) {
   return products.find((product) => product.id === id);
 }
 
-/**
- * A product is publishable only when the product-level verification fields,
- * independent review record, and structured catalog evidence all agree.
- */
 export function isProductVerified(product: Product): boolean {
   if (
     product.verificationStatus !== "verified" ||
     product.labelVerified !== true ||
     !product.sourceUrl ||
     !product.lastVerified
-  ) {
-    return false;
-  }
+  ) return false;
 
   const record = getVerificationRecord(product.id);
-  if (
-    !record ||
-    record.status !== "verified" ||
-    record.sourceUrl !== product.sourceUrl ||
-    record.verifiedAt !== product.lastVerified ||
-    !hasRequiredVerificationEvidence(record)
-  ) {
-    return false;
-  }
+  if (!record || record.status !== "verified" || record.sourceUrl !== product.sourceUrl || record.verifiedAt !== product.lastVerified || !hasRequiredVerificationEvidence(record)) return false;
 
   const evidence = product.catalogEvidence;
   if (!evidence) return false;
-
-  const category =
-    product.category === "Dog Food" ? "wet-food" : "dry-food";
 
   return isRecommendationReady({
     id: product.id,
     brand: product.brand,
     productName: product.name,
     species: "dog",
-    category,
+    category: product.category === "Dog Food" ? "fresh-food" : "dry-food",
     lifeStages: (product.lifeStages ?? []).map((stage) =>
-      stage === "Puppy"
-        ? "puppy"
-        : stage === "Adult Maintenance"
-          ? "adult"
-          : "all-life-stages",
+      stage === "Puppy" ? "puppy" : stage === "Adult Maintenance" ? "adult" : stage === "Senior" ? "senior" : "all-life-stages",
     ),
     labelSource: evidence.source,
     evidence,
