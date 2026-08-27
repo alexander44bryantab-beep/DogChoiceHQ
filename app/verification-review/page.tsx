@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getVerificationReviews } from "@/lib/verification-review";
+import { products } from "@/data/products";
 import "../catalog/catalog.css";
 
 export default function VerificationReviewPage() {
@@ -24,25 +25,36 @@ export default function VerificationReviewPage() {
           </span>
         </div>
         <div className="catalog-list">
-          {reviews.map((review) => (
-            <article className="catalog-row" key={review.productId}>
-              <div>
-                <p className="product-brand">{review.status.replace("-", " ")}</p>
-                <h3>{review.productName}</h3>
-                <p>
-                  {review.passedChecks}/{review.totalChecks} evidence checks passed · {review.completenessPercent}% complete
-                </p>
-                {review.missingChecks.length > 0 && (
-                  <p className="sample-note">
-                    Missing: {review.missingChecks.join(", ")}
+          {reviews.map((review) => {
+            const product = products.find((item) => item.id === review.productId);
+
+            return (
+              <article className="catalog-row" key={review.productId}>
+                <div>
+                  <p className="product-brand">{review.status.replace("-", " ")}</p>
+                  <h3>{review.productName}</h3>
+                  <p>
+                    {review.passedChecks}/{review.totalChecks} evidence checks passed · {review.completenessPercent}% complete
                   </p>
-                )}
-              </div>
-              <span className="verification-pill">
-                {review.readyForRecommendation ? "Ready" : "Needs review"}
-              </span>
-            </article>
-          ))}
+                  {review.missingChecks.length > 0 && (
+                    <p className="sample-note">
+                      Missing: {review.missingChecks.join(", ")}
+                    </p>
+                  )}
+                </div>
+                <div className="catalog-row-actions">
+                  <span className="verification-pill">
+                    {review.readyForRecommendation ? "Ready" : "Needs review"}
+                  </span>
+                  {product && (
+                    <Link className="back-link" href={`/verification-review/${product.id}`}>
+                      View evidence →
+                    </Link>
+                  )}
+                </div>
+              </article>
+            );
+          })}
         </div>
       </section>
 
