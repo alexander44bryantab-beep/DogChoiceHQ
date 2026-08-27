@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getProduct, products } from "../../../data/products";
+import { getProduct, getProducts } from "@/lib/product-repository";
 
 const siteUrl = "https://dogchoicehq.com";
 
 type Props = { params: Promise<{ id: string }> };
 
 export function generateStaticParams() {
-  return products.map((product) => ({ id: product.id }));
+  return getProducts().map((product) => ({ id: product.id }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
