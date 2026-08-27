@@ -1,0 +1,27 @@
+.compare-hero { padding: 55px 0 70px; background: #eef3e8; }
+.back-link { display: inline-block; margin-bottom: 45px; font-weight: 700; font-size: 14px; }
+.compare-hero h1 { max-width: 760px; }
+.comparison-header { display: flex; justify-content: space-between; gap: 25px; align-items: end; }
+.sample-note { color: #68746f; font-size: 12px; padding-bottom: 50px; }
+.comparison-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.comparison-card { padding: 28px; border: 1px solid #dedfd7; border-radius: 18px; background: #fff; }
+.comparison-card.featured { border: 2px solid #b55d34; }
+.rank-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+.rank { font-weight: 800; }
+.badge { padding: 7px 10px; border-radius: 999px; background: #e8eee3; color: #365447; font-size: 11px; font-weight: 800; }
+.product-brand { margin: 0 0 7px; color: #8a928e; font-size: 12px; }
+.comparison-card h3 { margin: 0; font-size: 25px; letter-spacing: -.5px; }
+.product-summary { color: #68746f; font-size: 14px; line-height: 1.55; min-height: 66px; }
+.score-large { margin: 24px 0 12px; display: flex; align-items: baseline; gap: 6px; }
+.score-large strong { font-size: 42px; }
+.score-large span { color: #8a928e; font-size: 13px; }
+.metric { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-top: 1px solid #ecece6; font-size: 13px; }
+.metric span { color: #78827d; }
+.metric b { text-align: right; }
+.features { display: grid; gap: 8px; margin: 20px 0 25px; color: #53645e; font-size: 13px; }
+.full { display: block; text-align: center; }
+.score-method { display: grid; grid-template-columns: repeat(3, 1fr); gap: 35px; }
+.score-method strong { font-size: 30px; color: #b55d34; }
+.score-method h3 { margin: 10px 0 8px; }
+.score-method p { color: #68746f; line-height: 1.6; }
+@media (max-width: 800px) { .comparison-grid, .score-method { grid-template-columns: 1fr; } .comparison-header { align-items: start; flex-direction: column; } .sample-note { padding-bottom: 0; } }
